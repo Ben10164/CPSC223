@@ -1,0 +1,28 @@
+# All times in milliseconds (msec)
+# Column 1 = input data size
+# Column 2 = binsearch map insert
+# Column 3 = array map insert
+# Column 4 = linked map insert
+# Column 5 = binsearch map erase
+# Column 6 = array map erase
+# Column 7 = linked map erase
+# Column 8 = binsearch contains
+# Column 9 = array map contains
+# Column 10 = linked map contains
+# Column 11 = binsearch find range
+# Column 12 = array map find range
+# Column 13 = linked map find range
+# Column 14 = binsearch sorted keys
+# Column 15 = array map sorted keys
+# Column 16 = linked map sorted keys
+0 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+2000 0.04 0.00 0.00 0.04 0.02 11.27 0.03 0.01 5.24 2.86 0.16 5.32 0.03 0.14 5.44
+4000 0.07 0.00 0.00 0.07 0.03 42.43 0.07 0.01 21.09 11.20 0.33 21.20 0.06 0.30 21.33
+6000 0.12 0.00 0.00 0.11 0.05 99.16 0.09 0.02 48.25 26.42 0.52 48.31 0.09 0.48 48.70
+8000 0.14 0.00 0.00 0.13 0.06 170.54 0.11 0.03 85.31 44.38 0.69 85.39 0.11 0.64 85.92
+10000 0.19 0.00 0.00 0.17 0.08 269.75 0.15 0.04 135.19 76.10 0.90 135.25 0.15 0.83 136.82
+12000 0.21 0.00 0.00 0.20 0.10 395.84 0.18 0.04 198.35 105.55 1.09 198.41 0.18 1.00 198.95
+14000 0.24 0.00 0.00 0.22 0.11 532.99 0.20 0.05 267.59 142.08 1.28 272.94 0.20 1.22 276.81
+16000 0.27 0.00 0.00 0.26 0.13 727.42 0.22 0.06 363.11 180.45 1.48 364.99 0.22 1.36 358.98
+18000 0.33 0.00 0.00 0.31 0.15 887.72 0.29 0.07 443.66 254.63 1.67 441.48 0.28 1.63 446.58
+20000 0.36 0.00 0.00 0.34 0.16 1103.50 0.30 0.07 543.32 304.24 1.87 543.09 0.30 1.74 545.28

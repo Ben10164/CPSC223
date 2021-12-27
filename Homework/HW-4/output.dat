@@ -1,0 +1,19 @@
+# All times in milliseconds (msec)
+# Column 1 = input data size
+# Column 2 = avg time array merge sort, sorted
+# Column 3 = avg time array merge sort, reversed
+# Column 4 = avg time array merge sort, shuffled
+# Column 5 = avg time array quick sort, shuffled
+# Column 6 = avg time linked merge sort, sorted
+# Column 7 = avg time linked merge sort, reversed
+# Column 8 = avg time linked merge sort, shuffled
+# Column 9 = avg time linked quick sort, shuffled
+0 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+2500 0.00 0.00 0.00 0.00 0.00 0.00 0.00 2.00
+5000 1.00 1.00 1.00 1.00 0.00 0.00 0.00 8.00
+7500 1.00 1.00 1.00 2.00 0.00 0.00 1.00 20.00
+10000 2.00 2.00 2.00 3.00 1.00 1.00 1.00 37.00
+12500 2.00 2.00 3.00 4.00 1.00 1.00 2.00 76.00
+15000 3.00 3.00 4.00 5.00 1.00 1.00 2.00 89.00
+17500 4.00 4.00 5.00 7.00 2.00 2.00 3.00 128.00
+20000 4.00 4.00 5.00 8.00 2.00 2.00 4.00 186.00

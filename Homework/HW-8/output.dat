@@ -1,0 +1,36 @@
+# All times in milliseconds (msec)
+# Column 1 = input data size
+# Column 2 = binsearch map insert shuffled
+# Column 3 = hash map insert shuffled
+# Column 4 = bst map insert shuffled
+# Column 5 = avl map insert shuffled
+# Column 6 = binsearch map erase shuffled
+# Column 7 = hash map erase shuffled
+# Column 8 = bst map erase shuffled
+# Column 9 = avl map erase shuffled
+# Column 10 = binsearch contains shuffled
+# Column 11 = hash map contains shuffled
+# Column 12 = bst map contains shuffled
+# Column 13 = avl map contains shuffled
+# Column 14 = binsearch find range shuffled
+# Column 15 = hash map find range shuffled
+# Column 16 = bst map find range shuffled
+# Column 17 = avl map find range shuffled
+# Column 18 = binsearch sorted keys shuffled
+# Column 19 = hash map sorted keys shuffled
+# Column 20 = bst map sorted keys shuffled
+# Column 21 = avl map sorted keys shuffled
+# Column 22 = bst map height shuffled
+# Column 22 = avl map height shuffled
+# Column 24 = log base 2 of input size
+0 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0 0 0
+15000 0.00 0.00 0.01 0.00 1.50 0.00 0.00 0.00 1.36 0.00 0.01 0.00 1.46 0.07 0.00 0.00 1.35 3.70 0.69 0.29 129 15 14
+30000 0.00 0.00 0.00 0.00 2.97 0.00 0.01 0.00 2.87 0.00 0.00 0.00 3.06 0.16 0.01 0.01 2.86 17.63 0.88 0.45 246 16 15
+45000 0.00 0.00 0.01 0.00 4.64 0.01 0.01 0.00 4.62 0.00 0.02 0.00 4.74 0.23 0.03 0.01 4.43 59.92 1.81 0.69 363 17 16
+60000 0.00 0.00 0.00 0.00 6.15 0.00 0.01 0.00 6.01 0.00 0.00 0.00 6.39 0.33 0.02 0.01 5.99 153.58 2.42 0.87 480 17 16
+75000 0.00 0.00 0.01 0.00 7.87 0.00 0.01 0.00 7.67 0.00 0.01 0.00 8.18 0.39 0.05 0.03 7.66 366.85 6.24 1.51 598 18 17
+90000 0.00 0.00 0.01 0.00 9.44 0.00 0.01 0.00 9.23 0.00 0.01 0.00 9.82 0.66 0.08 0.03 9.24 735.58 6.92 1.42 715 18 17
+105000 0.00 0.00 0.04 0.00 11.32 0.00 0.02 0.00 11.10 0.00 0.03 0.00 11.66 1.17 0.13 0.03 11.00 1253.89 5.30 1.93 832 18 17
+120000 0.00 0.00 0.01 0.00 13.05 0.00 0.01 0.00 12.63 0.00 0.02 0.00 13.39 2.67 0.22 0.05 12.66 1894.42 7.19 2.19 949 18 17
+135000 0.00 0.00 0.03 0.00 14.81 0.00 0.02 0.00 14.61 0.00 0.01 0.00 15.57 0.92 0.33 0.07 14.45 3455.52 8.51 3.35 1066 19 18
+150000 0.00 0.00 0.13 0.00 16.92 0.00 0.03 0.00 16.76 0.00 0.13 0.00 18.48 1.68 0.43 0.12 16.28 5578.84 19.11 3.46 1184 19 18

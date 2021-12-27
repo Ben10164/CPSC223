@@ -1,0 +1,33 @@
+# All times in milliseconds (msec)
+# Column 1 = input data size
+# Column 2 = binsearch map insert shuffled
+# Column 3 = array map insert shuffled
+# Column 4 = hash map insert shuffled
+# Column 5 = bst map insert shuffled
+# Column 6 = binsearch map erase shuffled
+# Column 7 = array map erase shuffled
+# Column 8 = hash map erase shuffled
+# Column 9 = bst map erase shuffled
+# Column 10 = binsearch contains shuffled
+# Column 11 = array map contains shuffled
+# Column 12 = hash map contains shuffled
+# Column 13 = bst map contains shuffled
+# Column 14 = binsearch find range shuffled
+# Column 15 = array map find range shuffled
+# Column 16 = hash map find range shuffled
+# Column 17 = bst map find range shuffled
+# Column 18 = binsearch sorted keys shuffled
+# Column 19 = array map sorted keys shuffled
+# Column 20 = hash map sorted keys shuffled
+# Column 21 = bst map sorted keys shuffled
+# Column 22 = bst map height shuffled
+# Column 23 = log base 2 of input size
+0 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 -1 0
+15000 0.43 0.00 0.00 0.00 0.37 0.20 0.00 0.01 0.10 0.11 0.00 0.00 0.47 13.54 0.21 0.00 0.30 2.15 4.55 466.39 129 14
+30000 0.84 0.00 0.00 0.01 0.75 0.40 0.00 0.01 0.20 0.20 0.00 0.01 1.05 9.59 0.48 0.03 0.60 14.26 48.47 998.46 246 15
+45000 1.26 0.00 0.00 0.03 4.38 0.61 0.00 0.01 0.30 0.31 0.00 0.03 1.44 19.41 0.54 0.03 0.95 21.20 143.98 1999.78 363 16
+60000 4.63 0.00 0.00 0.07 3.42 0.81 0.00 0.02 0.41 0.40 0.00 0.03 1.87 30.11 1.55 0.07 1.22 28.95 261.18 3510.50 480 16
+75000 6.18 0.00 0.00 0.09 1.93 1.01 0.00 0.02 0.52 0.50 0.00 0.08 2.52 47.96 1.44 0.18 1.63 22.81 588.42 5540.77 598 17
+90000 3.54 0.00 0.00 0.06 2.26 1.21 0.00 0.02 0.61 0.61 0.00 0.09 8.01 33.14 1.53 0.15 1.92 41.03 1247.59 7924.81 715 17
+105000 7.04 0.00 0.00 0.12 8.02 1.41 0.00 0.03 0.71 0.71 0.00 0.09 3.26 34.01 2.23 0.18 2.43 36.16 2040.94 10664.36 832 17
+120000 7.02 0.00 0.00 0.04 8.75 1.62 0.00 0.01 0.82 0.83 0.00 0.09 3.68 64.05 6.90 0.24 2.44 24.09 3051.74 13893.12 949 17

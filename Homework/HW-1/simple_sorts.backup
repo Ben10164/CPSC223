@@ -1,0 +1,37 @@
+//---------------------------------------------------------------------------
+// NAME:
+// FILE: simple_sorts.cpp
+// DATE: Fall 2021
+// DESC: 
+//---------------------------------------------------------------------------
+
+#include <iostream>
+#include "simple_sorts.h"
+
+
+void swap(int& x, int& y)
+{
+  int tmp = x;
+  x = y;
+  y = tmp;
+}
+
+
+// TODO: Implement the three sorting functions below. For additional
+//       information conconcerning the functions see the
+//       simple_sorts.h file.
+
+
+void bubble_sort(int array[], int n)
+{
+}
+
+
+void insertion_sort(int array[], int n)
+{
+}
+
+
+void selection_sort(int array[], int n)
+{
+}

@@ -1,0 +1,1361 @@
+8/31/21
+
+(git submodule add git@github.com:Gonzaga-CPSC-223-Fall-2021/hw#-Ben10164 HW-#)
+
+www.cs.gonzaga.edu/bowers/courses/cpsc223
+
+Grading:
+   60% - HW
+   10% class participation
+   5% weekly quizzes
+   25% exams (5% midterm, 7.5% report, 12.5% final comprehensive)
+
+Software:
+   Dept. VM and/or ada software
+   cmake, make, googletest, g++, gbd, valgrind, git, gnuplot
+   editor of choice
+
+Homework heavy (all programming)
+
+Late policy:
+   if you miss the deadline you can still turn in the work for the next 2 weeks.
+   Penalty - 25% off the top,
+   If you turn in the hw and get less than 75%, you can turn it in late revised (one time)
+
+Class participation: Attendance / Worksheets handed out
+
+--------
+
+Data Type:
+   Set of values and operations.
+
+      set of values:
+         (int, uint, int32, ulong, etc...)
+      operations:
+         (+,-, print, read, etc...)
+
+"Base" Data Type:
+   primitive, atomic.
+   Implies that it is built into the language.
+   Examples: Values cannot be decomposed any further. (Unstructured)
+
+Composite Data Type:
+   Structured (decomposable) values
+   Examples: Struct, Array of ints, etc...
+
+Abstract Data Type (ADT):
+   No specific implementation (many possible ones).
+   Usually for collections of data. (Between 0 and n items)
+   Examples: Stack, Queue, Set, Dictionary (Collection of key value pairs), tree, graph (CPSC450), priority queue, etc...
+      In this class we will talk about: Sequence (List), Dictionary, PriorityQueue.
+
+Data Structure:
+   Concrete implementation of data collection.
+   Used to implement abstract data types.
+      Adding, Removing, Searching
+   Examples: Static Array, Dynamic/Resizable Array, Linked List, Binary Search Tree (BST), Hash Tables, Heap.
+      (Used to implement Abstract Data Types)
+   Sorting really helps the Data Structures.
+
+9/2/21
+
+   int a1[] = {1, 2, 3} is equivalent to int a1[]{1, 2, 3}
+   Thats pretty cool, so you don't need to have an equal sign. It is a more modern approach.
+
+   int x = 42;
+   (x = 42 @memory address 111)
+
+   int* y = &x;
+   (y is variable that value is the address @111)
+
+   *y = x*2
+   (an assignment, right hand side first, then take that value and put it into the memory slot on the left side)
+   (x is a memory slot, which is 42, then you multiply it by 2, making 84)
+   (*y dereferences the pointer, go to y, pull out the address, and goto the address. The address is the address of x)
+   (now we store 84 in the address. )
+
+   cout << x << " " << *y << endl;
+   (outputs x (84), then a space, then what is located at the address that y specifies (this is because of the * in front of y))
+
+
+   int &x;
+   (x is an integer reference, it is assigned to another things memory)
+   (Since its not being associated to anything, this is ILLEGAL AND A COMPILE ERROR)
+   (uninitialized address)
+
+   int y;
+   (it declares a space for the variable named y, but it doesnt change the bytes inside the space is the value of y)
+   (Terrible practice, and results with y being a random int)
+
+   int* z = y;
+   (type error. It is trying to make a int* (address) be an int (just a regular int))
+
+   int* u;
+   (Not initializing the pointer. Just has a random value)
+
+   *u = y;
+   (Because u was not initialized, it tries to go to the random address that it was given, and change it to be whatever y's value is)
+   (again, legal, but terrible practice)
+
+   int* v = NULL;
+   (Creates v, at an address, with NULL as the value)
+   (This is old, but you should use nullptr)
+
+
+
+   int* x = nullptr;
+   if (...){
+      int y = 42;
+      x = &y;
+      (x becomes a pointer to the memory address of y)
+   }
+   if (x != nullptr){
+      cout << *x << endl;
+      (UH OH, its going to y, which is out of scope. most likely the memory address has been changed.)
+   }
+
+
+   int& triple(int x){
+      int y = x * 3;
+      return &y;
+      (UH OH< its going to return the address to a local variable. This is awful)
+   }
+
+      OKAY:
+      int* x = ...
+      (this is a pointer. It is a non int (kind of, it still is an int), that is an address.)
+      int& y = ...
+      (this is a reference. it is opaque. It is a regular int, but that int is the memory address of another variable.)
+
+
+      Schedule overlaps (schedule s1, schedule s2) (this is fine, but because it has to make new copies of s1 and s2, this is terribly inefficient)
+
+      schedule overlaps (schedule& s1, schedule& s2) (this is a lot faster because it doesn't make any copies)
+
+      schedule& overlaps(const schedule& s1, const schedule& s2)
+         (Const means that the function will not be modifying the values)
+         (you can make this even better by using a copy constructor)
+
+   GTEST syntax
+      TEST(suite, name){
+         // the contents of the test
+         ASSERT_LE(x,y) will return false is x is not Less than or Equal to y
+      }
+
+9/7/2021
+   How homework/work is graded:
+      Complete & Correct
+         20-30 points
+      Testing
+         0-10 points
+      Format & Comments
+         5 points
+      Discussion & Analysis
+         5 points
+
+   Basic Sorting Algorithms
+      Selection/Insertion/Bubble sort all have O(n^2)
+
+      Selection Sort:
+         The basic idea:
+            Select (Find) the smallest item in the unsorted region
+            Swap the smallest item in the unsorted region with the first item in the unsorted region
+            Shrink the unsorted region from the bottom up
+               [(5, 2, 6, 3)] - 2 is the smallest of all of them
+               [(2, 5, 6, 3)] - swapped
+               [2, (5, 6, 3)] - 3 is the smallest of the unsorted region
+               [2, 3, (6, 5)] - 5 is the smallest
+               [2, 3, 5, (6)] - Since the unsorted region is length 1, nothing changes (still swaps though)
+               [2, 3, 5, 6] - SORTED
+         Selection sort is good because it does very few moves
+         But it is also bad because it does a set amount of moves, so other sorting algorithms have the potential to be better
+
+      Insertion Sort:
+         The basic idea:
+            Take the first element in the unsorted region
+            Insert it into the correct location in the sorted region
+            ^Shifting
+            Stop when the unsorted region is empty
+               I am not making another visual for this
+         Insertion sort is good because it can have very few comparisons depending on how close to sorted the array is
+         But it is also bad because if the array is reversed... thats a lot fo comparisons
+
+      Bubble Sort:
+         The basic idea:
+            Compare adjacent items
+            Swap if out of order
+            (for whole unsorted region)
+
+      -- Excerpt from my HW-1 write up that had unneeded detail that I removed from the final version --
+
+      "
+         The first sort that I coded was Bubble Sort (O(N2)). Bubble Sort is a form of sorting where you take multiple run-throughs
+         of the array comparing 2 positions and swapping them depending on their values. After multiple run-throughs this results in
+         a sorted array. I accomplished this by having a while(true) loop that would continue until it was sorted. Inside that while
+         loop was a for loop that had variable i go from 0 to size-1. Inside the for loop there is a comparison between array[i] and
+         array[i+1]. If array[i] is larger than array[i+1] then they are swapped. Whenever a swap occurs I have a Boolean value isOrdered
+         become false. This means that if there is ever a time where the for loop traverses the array without a swap it is in order.
+         After the for loop there is a if statement that will break if isOrdered is still true. This results in an ordered array using
+         the Bubble Sort method.
+
+         The next sort I coded was Insertion Sort (O(N2)). Insertion Sort is a form of sorting where it focuses on making its way through
+         the array inserting one value at a time, hence the name “Insertion”. This is accomplished by a nested for loop. This was the most
+         natural sorting method I coded because it is the method that most people do while they sort a deck of cards. I accomplished this
+         by having 2 for loops, one inside the other, with the outer loop defined as int i = 0 and i < size with ++i, and the inner loop
+         being defined as int j = i and j > 0 with --j. Then if arr[j] < arr[j-1], the two values are swapped. This means that whenever the
+         outer loop increments, the job of the inner loop is to traverse the array in order to find where the new value should be stored.
+         After the outer loop finishes, the array will be sorted using the Insertion Sort method.
+
+         The final sort that I coded was Selection Sort (O(n2)). Selection Sort is a form of sorting that traverses a shrinking portion of
+         the array while keeping track of the smallest value in order to swap it with the first unsorted position. The way I coded this was
+         by having a nested for loop. The outer loop would have variable i start at 0 and continue until size. This allows the inner loop to
+         have variable j start at i and continue until size. Before the inside loop starts I create a variable called currentMin that was
+         equal to array[i], and a variable called currentMinPos that equals i. Inside the inner loop would be an if statement that if array[j]
+         is smaller than currentMin, then currentMin = array[j] as well as currentMinPos becomes j. After the end of the inner loop the values
+         of array[i] and array[currentMinPos] are swapped. After the outer loop concludes, the array will be sorted using the Selection Sort
+         method.
+      "
+   Operator Overloading:
+      relational (<, >, <=, >=, !=, ==)
+      arithmetic (+, -, *, /, +=, etc...)
+      array index ([])
+
+      Rectangle(int width, int height);
+      Rectangle r1(10, 10) (square)
+      Rectangle r2(10,20) (rectangle)
+
+      i want to do
+      if(r1 < r2){
+         ...
+      }else{
+         ...
+      }
+
+      but < is not defined for rectangles
+      so we need to define a function inside the rectangle class
+      that looks like this
+      returntype operatorop(param-list)
+
+      bool opperator<(...)
+
+      binary operator - has two operands (>, +, etc...)
+      unary operator - has one operand (++, --, )
+
+      dont do this, but you can do
+      cout << r1.operator<(r2)<< endl; // r1 is lefthand side, r2 is righthand side
+      do this instead
+      cout << (r1<r2) << endl;
+
+      class Rectangle{
+         public:
+            ...
+            bool operator<(const Rectangle& rhs) const;
+            ...
+      };
+
+      bool Rectangle::operator<(const Rectangle& rhs) const{
+         return area() < rhs.area();
+      }
+
+      r1 > r2 == r2 < r1
+
+      ... > ...
+      return rhs < *this;
+
+    In a call:
+        r1 < r2
+    c++ converts to:
+        r1.operator<(r2)
+    which is really:
+        operator<(&r1, r2) 
+            bool operator<(const Rectangle* this, const Rectangle& rhs)
+
+    class Rectangle
+    {
+        public:
+            bool operator<(const Rectangle& rhs) const:
+            (passing by refference is alot mor eefficient because it doenst need to copy)
+            (const on rhs because its promising that after this is called, r2 will not be changed)
+            (the after const states that r1 wont change)
+            (calling the function wont change the opject the function is of)
+            a const before the function means that what is returned cannt be changed
+
+        
+    };
+    -----
+    bool Rectangle::operator<(cont Rectangle& rhs) const
+    {
+        return area() < rhs.area();
+    }
+
+    keyname this referes to the current object
+    return area() == return this->area()
+    'this' is a pointer to the current object
+    (*this)[dereferences the object]
+    *this.area() == this->area()
+
+        THIS IS WHAT C++ DOES
+    class c
+    {
+        void f(int x)
+    }
+    void f'(c* this, int x)
+
+    with < you can make >,<=,>=,==,!=
+    < is *this < rhs
+    > is rhs < *this
+    >= is !(*this < rhs)
+    <= is !(rhs < *this)
+    == is !(rhs<*this) and !(*this<rhs)
+    != is (rhs<*this) || (*this<rhs)
+
+    binary addition
+    
+    operator+ (binary)
+    int x = 3;
+    int y = 4;
+    int z = x+y;
+
+    Rectangle operator+(const Rectangle& rhs) const;
+    return type rectangle
+
+    Rectangle r;
+    r.length = length + rhs.length;
+    r.width = width + rhs.width;
+    return r;
+
+    (using width because it is inside the lfs already)
+
+    unary minus
+    rectangle operator-() const;
+    rectnagle r;
+    r.width = length;
+    r.length = width;
+    return r;
+
+    operator++(prefix)
+    prefix is ++x;
+
+    Rectangle r1(10,20);
+    ++r1; // r1 is (11,21)
+    since ++ has a side effect it is not const
+
+    Rectangle& operator++(); // prefix
+    ++width;
+    ++height;
+    return *this;
+    // returns itself since it is unary addition (prefex)
+
+    operator++(postfix)
+    x = 3;
+    cout << x++ << " " << x << endl; is 3 4
+
+    Rectangle operator++(int); // postfix, this takes an int because bjorn wanted it to (it differentiates it from prefix)
+    Rectangle r(width, height); // assuming we have a constructor
+    ++width;
+    ++height;
+    // OR
+    ++(*this)
+    return r;
+
+9/16
+    Overload: Same function name, different signatures
+    Override: Same functiuon signature, base & derivaed class
+        
+    int x = 42; (42 @ 111)
+    int* y = &x; (@111 @ 222)
+    int* z = y; (@111 @333)
+    *y = 1 + *z; (@111 @222)(@111 = 43)
+    cout << x << " " << *y << " " *z;
+    "43 43 43"
+
+    stream insertion and extraction
+    << insertion (cout << r1;)
+    >> extraction (cin >> r1;)
+    cout is an object of type outputstream (ostream)
+    cin is an object of type inputstream (istream)
+
+    class Rectangle
+    {
+        Public:
+            ...
+            friend ostream& operator<<(ostream& out, const Rectangle& rhs);
+            friend istream& operator>>(istream& in, Rectangle& rhs);
+            ...
+    };
+
+    ostream& operator<<(ostream& out, const Rectangle&rhs){
+        out << rhs.length << " " << rhs.width;
+        return out;
+    }
+
+    Basic "Sequence" ADT
+        A sequence is an odered collection of items
+            order is based on the position in the sequence (index)
+                <5, 4, 1, 3, 2, 8>
+            These can grow and shrink
+        Can have duplicates
+
+
+        class Sequence
+        {
+            public:
+                int size() const; // const because when called it doesnt cahnge the value of it
+                bool empty() const;
+                int& operator[](int index); // returns the address of the index so it can be assigned something different
+                const int& operator[](int index) const; // r value (returns a reference to the index, but its const because it doesnt change)
+                void insert(int elem, int index);
+                void erase(int index);
+                bool contains(int elem) const;
+                
+        }
+
+        s[i] = .... 
+        or 
+        .... = s[i]
+
+9/21/21
+
+    class Sequence
+    {
+        public:
+        int size() const;
+        bool isEmpty() const;
+        int& operator[](int index);
+        ...
+    }
+
+    class LinkedSeq:publicSequence
+    {
+        public: 
+            //constructors, destrictr, assignment...
+            // sequence functions
+            int size() const;
+            bool empty() const;
+        private:
+            struct Node{
+                int value;
+                Node* next;
+            };
+            Node* head;
+            Node* tail;
+            int node_count;
+    };
+
+    tail points to the last node, making it easier to add to the end
+    used for when inserting at the end of the list
+    during remove you cant use tail, because this is a singly linked list
+        dont forget to update the tail
+
+
+    static vs dynamic binding
+        static = compile time
+        dynamic = run time
+    LinkedSeq S;
+    S.insert(42,0) - the compiler is going to bind the correct version of insert() at COMPILE (STATIC)
+        c++ will figure out that it is using the linkedseq version of insert
+    ----------
+    void ins_in_front(Sequence& s2, int elem){ this uses subtyp3e polymorphism since it is passing by reference.
+        s2.insert(elem, 0);
+    }
+    ...
+    LinkedSeq s1;
+    ins_in_front(s1, 42);
+        s1 is a linkedSeq, but still works in a sequence version of insert
+    subtype polymorphism, as long as the subtype has sequence as the parent class, it will work
+
+            IS THE SAME AS 
+
+    linkedseq* s1 = new linkedseq;
+    ...
+    sequence* s2 = s1;
+    s2->insert(42,0);
+
+    STATIC BINDING IS FAST, SO C++ USES IT BY DEFAULT
+
+    how to get dynamic binding in c++
+            this means that instead of refering to the objects type, it will refer to what the object is pointing to
+        you need to for each function tell c++ that it should be dynamically bound
+                use the virtual keyword
+            in sequence:
+                virtual int size() const;
+            in linkedseq:
+                int size() const override;
+
+    Sequence is an ADT. shouldn't prescribe an implementation
+        you dont want to make objects with type sequence
+        want to make sequence an "Abstract" class
+            Abstract class = a class w/ at least 1 unimplemented function
+                "pure virtual functions"
+                    add the to the function def "=0"
+                            virtual int size() const = 0;
+                                cant be instantiated
+            Concrete class = all functions are implemented
+                "concrete functions"
+
+    Sequence of any type of value
+        collection types:
+            Homogeneous: I can have collections of different types, but for each of the stuff inside me needs to be the same (like an array)
+            Heterogeneous: I can have collections of different types, and i dont care if they are at the same time (like an array in python)
+
+    Typedef takes type name, then type
+    typedef __ __
+          name  type
+          typedef SeqType int;
+          now i can refer to SeqType as if it is an int (allias)
+            virtual void insert(const SeqType& elem, int index) = 0;
+
+        INSERT TEMPLATE 
+    c++ templates allow us to define "type parameters"
+        classes become parameterized with "type variable"
+
+        SYNTAX
+        template <typename T>
+
+        Sequence<int>* s1;
+            T becomes int
+        Virtual T& operator[](int index) = 0;
+        virtual void insert(const T& elem, int index) = 0;
+        so you can do Sequence<sequence<string>*>* 
+
+    Template<typename T>
+    class linkedseq : public sequence<t>
+    {
+        public:
+            void insert(cont T& elem...)
+
+        private:
+            struct Node{
+                T value;
+                Node* next;
+                ...
+            }
+    }
+    HOWE TO DEFINE THEM
+
+    how to define void insert(const T& elem, int index) overide;
+
+    template<typename T>
+    void LinkedSeq<T>::insert(const T& elem, int index){
+        ...
+    }
+
+    template<typename T>
+    int LinkedSeq<T>::size() const
+    {
+        return node_count;
+    }
+
+9/23
+    use throw and catch for exceptions
+    check out his lecture notes
+    check for index stuff for insert, erase, and both []
+
+    if(index , 0 or index . size()){
+        throw std::out_of_range(:LinkedSeq<T>::insert(...)");
+    }
+
+    void some_other_function(){
+        LinkedSeq<char> s1;
+        try{
+            s1.insert('a',1); // throws an error because the current size is 0, so it must be insert('a',0)
+        }catch(std::out_of_range& ex) // this catch will run if the thrown exception is out of range
+        {
+            cout << ex.what() << endl; // .what prints out a string that describes the error
+        }
+    }
+    essential operators
+        - construction         (LinkedSeq<char> S1;)
+        - initialization      (LinkedSeq<char> S2 = S1;)   --> copy constructor
+        - copy & assignment   (tmp = S2;) [with tmp already existing]    --> copy assignment
+        - move (we will do this later)
+        - destruction         (variable goes out of scope, or delete)
+
+
+    class x 
+    {
+        public: 
+        X(some params); // overloaded constructor
+        X(); // default constuctor             
+        X(cont X& x); // copy constructor     LinkedSeq<int> S2 = S1;
+        X(X&&x); // move constructor ???? (idk)
+        X& opperator=(const X& rhs) // copy assignment    S2 = S3;
+        X& opperator=(X&&rhs) // move assignment ?? (idk)
+        ~X(); //destructor 
+    }
+
+
+    destructor
+    tmp = head
+    head = head->next;
+    delete tmp
+    set head and tail to nullptr in a new function called make_empty() THIS IS IMPORTANT DNT FORGET
+
+    implicite versions
+        default constructor , nothing
+        copy constructor , copies the member variables into the other one, c2 = c1, c2 is filled with the member variables of c1
+        assignment  op, same as copy constructor
+        destructor , does nothing
+
+    template<typename T>
+    LinkedSeq<T>& LinkedSeq<T>::operator=(const LinkedSeq<T>& rhs)
+    {
+        if(this != &rhs){
+            "call make empty
+            node-by-node copy"
+        }
+        return *this;
+    }
+
+    template<typename T>
+    LinkedSeq<T>::LinkedSeq<T>(const LinkedSeq<T> &rhs) {
+        *this = rhs;
+    }
+
+9/28
+    Essential Ops
+    
+    class X
+    {
+    public:
+        X(some params);
+        X();
+        X(&&x);
+        x& operator=(const X&x);
+        X& operator=(X&&x);
+        ~X();
+    };
+    you will use all the essential stuff if your class ever uses 'new'
+
+    TODAY IS THE MOVE DAY
+
+    LinkedSeq<int> add_one(const LinkedSeq<int>& s)
+    {
+        // <1,2,4,5> as an input will return a new LS that is <2,3,5,6>
+        LinkedSeq<int> tmp;
+        for(int i = 0; i < s.size(); ++i){
+            tmp.insert(s[i] + 1, i);
+        }
+        return tmp;
+    } // hmm what actually get returned? since tmp goes out of scope
+
+    int main(){
+        LinkedSeq<int> s1;
+        s1.insert(1,0);
+        bla bla, more inserts
+        LinkedSeq<int> s2 = add_one(s1); // how does tmp becomes in scope?
+            this can also be written as:
+                LinkedSeq<int>s2(add_one(s1));
+    }
+
+    you need to create a copy of tmp to be used as the initialization of s2. since tmp goes out of scope
+    uh oh, terribly slow and bad
+    this is where the move constructor comes in
+
+    instead of making a copy, you can move the contents of temp into this new copy
+        instead of taking out all the marbles in the bag and putting them into a new bag, you just move the bag
+
+    how to force a move:
+        s3 = std::move(s2);
+            // will force a move assignment instead of the copy assignment
+    move:
+    1.
+        a. Make lfh empty
+        b. transfer the data studture from rhs to lhs
+    2.
+        1. zero out the associated vars on rhs
+
+    template<typename T>
+    LinkedSeq<T>::LinkedSeq(LinkedSeq<T>&& rhs){ // && is the syntax for the move synantics
+        *this  = std::move(rhs);
+    }
+
+    template<Typename T>
+    LinkesSeq<T>& LinkedSeq<T>::operator=(LinkedSeq<T>&& rhs){
+        // make sure to check and see if they are the same
+        if(this != &rhs){
+            // delete the current linked list
+            make_empty();
+            // transfer
+            head = rhs.head;
+            tail = rhs.tail;
+            node_count = rhs.node_count;
+            // zero out rhs
+            rhs.tail = rhs.head = nullptr;
+            rhs.node_count = 0;
+        }
+    }
+
+
+9/30
+    ArraySeq(HW-3)
+
+    template<typename T>
+    class ArraySeq : public Sequence<T>
+    {
+        publoc:
+            // essential ops
+            ...
+            // sequence functions
+            ...
+        private:
+            T* array = nullptr; (THe underlying resizable array (dynamically allocated))
+            int count = 0; (size of the sequence)
+            int capacity = 0; (The length of array)
+            void resize(); (for doubling the capacity dynamically)
+            void make_empty(); (de-allocates dynamically allocated array and sets member vars to initial values)
+    };
+
+    ArraySeq<int> s; (statically allocated)
+        with static you cant reallocate
+
+    T array[10]; (static)
+    T* array = new T[10]; (dyunamic)
+
+    Q: How do we allocate the "resized" array in resize?
+        T* new_array = new T[capacity*2];
+            (then copy stuff over from old array)
+        array = new_array;
+
+    Q: how do we dealocate the old array?
+        delete  array; // this is only deleting what arrays is pointing to (the first element)
+        // so we use
+        delete [] array;
+
+    basic idea of resize
+        1. allocate new_array(capacity*2)
+        2. copy array elems to new_array
+        3. update the capacity. capacity = capacity * 2;
+        4. delete old array. delete [] array;
+        5. array point to new_array. array = new_array;
+    
+    now in resize you want to put the new elem in:
+        first shift the elements that will be affected by the new value
+            [1,2,3,4], insert 5 at 1 -> [1, 0, 2, 3, 4] then [1,5,2,3,4]
+    
+    <STAR> no need to initialize, because count tells us where the good values stop 
+    
+
+10/5
+    Algorithmic Performance 
+    the number of the collections is n
+
+    ways to compare algorithms:
+        run performance eval (tied to machine hardware)
+            impliment it
+            run it with different n
+            time it
+            compare
+        detailed analysis:
+            count operations
+                one operation is a surigate for time
+            compare number of ops with different n
+            (think O(n))
+    
+    Detailed Analysis:
+        Goal: Define T(n) giving the number of steps (ops)
+                as a function of the input size n
+
+            bool member(const int A[], int n, int t) // is t in the array A of size n
+            {
+                bool found = false; // 1
+                for(int i = 0; i < n && !found; ++i){
+                    if(A[i] == t) 
+                    {
+                        found = true;
+                    }
+                }
+                return found;
+            }
+
+            assume: assign/initalize, compare, increment, array access
+            best case: t == A[0] (10 ops)
+            worst case: t == A[n-1] (5n + 4 ops)
+
+        bool common(int A[], int B[], int n)
+        {
+            for (int i = 0; i < n; ++i){
+                for (int  = 0; j < n; ++j)
+                {
+                    if (A[i] == B[j])
+                    {
+                        return true;
+                    }
+                }
+            }
+            return true;
+        }
+            best case: A[0] == B[0] (7 ops)
+            worst case: B does not share any with A (5n^2 + 4n + 2)
+
+10/7
+        "What's your name?"
+            "Ben"
+        "Oh you're Puryear"
+        --Walks away--
+
+    Merge and Quick Sort Basics:
+        Merge Sort:
+            Basic Idea: (Recursive Divide and conquer)
+                1. Divide list into two halves (THis is called expansion)
+                2. Call merge sort on two halves
+                3. Merge together two sorted halves (This is called contraction) 
+
+                Pick the smallest of the two elements arrays, because you know its the smallest of them
+                    then move the index compared to each other one up for the array that was successful 
+                
+                        40, 10, 1, 9
+                    40 10        1 9
+                    (10) 40        (1) 9 (comparing the parens)
+                        _ _ _ _
+                    (10) 40        (9)
+                        1 _ _ _
+                    (10) 40        () ( now it must be in order if we add the left side)
+                        1 9 _ _
+                        1 9 10 40
+
+                if it is odd:
+                    you find the mid
+                        (start + end)/2 (make sure it is integer division, this will make ti favor the left side)
+                    then split, [start, mid] and (mid, end]
+                            5,6,2,4,1
+                        5,6,2 and 4,1
+                    5,6 and 2   and  4 and 1
+                5 and 6 and 2 and     4 and 1
+                
+                mergeSort(T array[], int start, int end){
+                    if(start < end){
+                        mid = (start+end)/2;
+                        mergeSort(array,start, mid);
+                        mergeSort(array, mid+1, end);
+                        merge(array,start, mid, end);
+                    }
+                }
+                merge(T array[], int start, int mid, int end){
+                    T temp[(end-start) + 1];
+                    first1= start;
+                    first2 = mid + 1;
+                    i = 0;
+                    while(first <= mid and first2<=end){
+                        if (array[first] < array[first2]){
+                            temp[i++] = array[first1++];
+                        }else{
+                            temp[i++] = array[first2++];
+                        }
+                    }
+                    while (first1 <= mid){
+                        tmp[i++] = array[first1++];
+                    }
+                    while(first2 <= end){
+                        temp[i++] = array[first2++];
+                    } 
+                    for (i = 0; i <= (end-start); ++i){
+                        array[start+i] = temp[i];
+                    }
+                }
+
+        Quick sort:
+            Basic Idea: Recursive divide and conquer
+                1. pick a "pivot" element (eg. first element)
+                2. put values less than pivot on left and values greater than on the right
+                3. call quick sort on each of the subarrays leaving pivot out
+            quick sort sucks if the list is already sorted, or in reverse order
+                to combat this you can pick the median value as the pivot
+                    
+                
+
+10/12
+    Merge sort over a linked list
+        use "splicing"/"reattatching" (not value copy)
+            instead of using tmp, use this instead.
+
+            rearrange the pointers
+            p1.next = p3
+            p2.next = p4
+            p3.next = p2
+
+            signature of the helper function
+            Node* mergesort(Node*left, int len)
+
+                left is a pointer to the first node in the portion of the linked list we are sorting
+                len is the length of the portion (including first node)
+
+            {
+                1. check len <= 1, then return;
+                2. compute the mid length, and set up the "right" ptr.
+                    in this situation you would just do len/2
+                    right pointer = index of mid
+                    you can also seperate the lists, have the index before mid point to null, and the last pointer point to null
+                3. left = merge_sort(left, mid)
+                4. right = merge_sort(right, length - mid)
+                5. merge the two sublists given by left and right
+                    THIS PART IS HARD
+                    create a few pointers
+                        new_left (points to null)
+                        then two pointers to navigate the two lists
+                            cur_left and cur_right
+
+                                the first instance
+                                if(cur_left <= cur_right){
+                                    new_left = cur_left
+                                    increment cur_left
+                                }else {
+                                    new_left = cur_right
+                                    increment cur_right
+                                }
+
+                            now make a new pointer that will traverse new_left's array
+                            continue adding and incrementing
+
+                        finish by returning new_left
+            }
+
+
+        void merge_sort()
+        {
+            1. head = merge_sort(head, node_count)
+            2. dont forget tail
+                update tail pointer with a loop
+                while(cur.next() != NULL)...
+        }
+
+
+        quick sort for linked list
+
+
+        Node* quick_sort(Node* start, int len)
+        {
+            if len <= 1 then return
+            2. separate first node (pivot)
+            3. move remaining nodes into smaller and larger lists (partition)
+            4. smaller = quic_sort(smaller, smaller_len)
+            5. larger = quick_sort(larger, larger_len)
+            6. attach smaller, pivot, and larger
+            7. return smaller
+        }
+
+        void quicl_sort()
+        {
+            1. head = quic_sort(head, node_count)
+            2. dont forget tail
+                update tail pointer with a loop
+                while(cur.next() != NULL)...
+        }
+
+    Alg. Analysis
+        Detailed Analysis
+            Member: T(n) <= 5n + 4 (linear time alg)
+            common: T(n) <= 5n^2 + 4n + 2 (quadratic time alg)
+
+            bool duplicates(const int A[], int n){
+                for(int i = 0; i < n; ++i){
+                    for(int j = i+1; j < n; ++j){
+                        if(A[i] == A[j]){
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+            best case = A[0] == A[1]
+            worse case = no duplicates
+
+
+10/19
+    KV - pair collections
+        Key value pair collections
+    what is it?
+        - a "key" (represents an identifier)
+        - each key has an associated "value"
+        - together they form a key value pair "kv-pair"
+ 
+    examples?
+        - a stock symbol (key) to a price (value)
+            (goog) -> 2800
+        - a ssn (key) to name (value)
+        - a state (key) to area, capital, other info (record)
+                a record is more complicated value.
+        - url (key) to keyword set (values)
+        - keyword (key) to a list / set of urls (value)
+
+    template <typename k, typename v>
+    class map
+    {
+        public:
+            virtual int size() const = 0;
+            virtual bool empty() const = 0;
+
+            {the following will throw out of range if the key is not in the map}
+            virstual V& operator[](const k& key) = 0;      {lvalue}
+                                m["GOOG"] = 2900;
+            virtual const v& operator[](const k& key) const = 0;   {rvalue}
+                                int price = m["GOOG"];
+            virtual void erase(const k& key) = 0;   { the keys must be unique }
+
+            virtual void insert(const k& key, const v& value) = 0; 
+            virtual bool contains(cont k& key) const = 0;
+
+            virtual ArraySeq<k> find_keys(const k& k1, const k& k2) const = 0;
+                if the value of k is greater than or equal to k1, and less than or equal to k2, add k to a new arrayseq
+                    k1 <= k <= k2
+            virtual ArraySeq<k> sorted_keys() const = 0;
+                does what it sounds like it does
+                    returns a sorted sequence of keys
+    }
+
+    map<string,int>&m = ... ; } concrete type
+    ...
+    m.insert("the",27);
+    m.insert("and",20);
+    if(m.contains("and")){
+        ...
+    } {this will pass}
+    cout << m["the"] << endl; {27}
+        {searches through all the key's tring to find one labled the}
+    m["and"] = 21; {you made a mistake and correct it, now "and" is mapped to 21}
+    ArraySeq<string> s1 = m.sorted_keys(); {s1 is [and, the]}
+    ArraySeq<string> s2w  = m.find_keys("a","t"); {s2 is [and]} {the is left out because the > t}
+
+
+    hw5
+
+    struct pair{
+        k first;
+        v second;
+
+    }
+
+    declaire: std::pari<k,v>p;
+    decalre and init: std::pair<k,v>p{key,value}; [this is used in insert]
+    access key: k key = p.first;
+    access value: v val = p.second;
+    set value: p.second = val; [in lindex[]... you return p.second]
+
+
+    1.
+    ArrayMap
+        - use: ArraySeq<std::pair<k,v>> seq;
+        - when inserting: always add to the end ****
+        - iterate through seq for both operator[], erase, contains, find_keys()
+        - for sorted_keys -
+            - create ArraySeq<k> temp
+            - put all the keys into temp [iterate]
+            - then use sort() on temp
+    2. 
+    LinkedMap
+        - same as ArrayMap
+        - but the type is LinkedSeq<std::pair<k,v>>seq;
+        - still used ArraySeq<k> for sorted keys and find_keys
+    3. 
+    BinSearchMap
+        - use: ArraySeq<std::pair<k,v>> seq;
+        - goal: make contains() faster
+        - use: binary search to implement contains 
+            bool bin_search(const k& key, int& index) const;
+                - pass in a key, if the key isin the array seqience, return true as well as change index to be the index
+                    - if the key is not in the collection, return false, as well asthe closest index to where the key could have been in the seqience
+
+
+10/21
+    quiz tuesday
+        check piazza
+
+    binary search:
+        example of a recursive function
+            but it works better as a loop
+
+        The basic idea:
+            Search for a particular value in a list
+                (value v or key)
+
+            iterativley search for a value v
+            assumptions:
+                the array is not empty
+                    uh oh this sucks, just return no
+                the array is in order / sorted
+            
+            split whats left to search in half
+                then again,
+                    and again,
+                        until you get it!
+                        (or its not there)
+
+            have a start index and an end index
+            and update them accordingly
+                mid will be (start + end)/2
+            
+            1. pick the middle item in the array
+            2. checks!
+                before a: if start > end 
+                    it must not be there
+
+                a. if the middle item is the wanted item, we return true. duh
+                b. else if v < middle item, then we search in the left half of the array
+                    end = index - 1
+                c. else if v > middle item, search the right half of the array
+                    start = index + 1
+
+        start = 0
+        end = size - 1
+        while(start <= end){
+            int index = (start+end) / 2  //mid val
+            if(array[index] == val){
+                return true;
+            }else if (array[index] < val){
+                end = index - 1
+            }else if (array[index] > val){
+                start = index + 1
+            }
+        }
+    for bin search map
+        use: arrayseq<std::pair<k,v>> seq;
+        contains(key)
+        erase(key)
+        operator[]
+        sorted_keys() 
+            returns a seq of sorted keys
+        find_keys(k1,k2)
+            returns a seq of keys that are greater than or equal to k1, and less than or equal to k2
+                k1<=k<=k2
+        insert(key,value)
+            adds to the map
+        
+        binary search will make everything faster, except insert.  
+            insert will be slower
+
+        bool bin_search(const k& key, int& index) const;
+            will if it returns true, int& index will also be changed 
+                and be the index of the found key
+        
+            use index on line 1101 for the int& index btw   HINT
+
+        during insert assume it is not in the array
+
+        bin_search(5,i);
+            if it isnt there i is where it should be
+                then yoy can!
+        seq.insert(5,i);
+            assuming bin_search was false
+
+10/26
+    iff stands for if and only if
+
+    big o - upper bound (cant be any slower than __)
+    big omega - lower bound  (cant be any better than __)
+    big theta - tight bound (the worst case is theta N, it is this bad)
+
+    Big. O Def: T(n) is o(f(n)) iff there exists positive constants k and n_0 such that T(n) <= k*f(n) (for all n >= n_0)
+            - drop the lower terms
+            - drop the constants
+            - n is always greater or equal to 0
+            - k must be 1 or larger
+            - n_0 can be 0, usually 1 or larger
+
+        Let T(n) <= 3n+2
+            show T(n) is O(n)
+                    to show:
+                        - pick a k value, and an n_0 value that makes the def true
+                        k = 5, n_0 = 1
+                                (i said my answer and he said
+                                    "Who said that? That was a great answer")
+    
+    log = log(base10)
+    lg = log(base2)
+
+    algorithms that are like o(1), o(logn), o(n), o(nlogn) are considered "for free"
+
+    stuff like o(n^n) or o(2^n) or o(n!) are called intractible.
+        never use these
+    
+    Big Omega Def: T(n) is o(f(n)) iff there exists a positive constant k and n_0, such that t(n) >= k*f(n) (for all n >= n_0)
+
+        Excersize:
+            t(n) >= 4n + 3
+            show that t(n) is omega(n)
+                k = 4, n_0 = 0
+            
+    Big Theta Def: T(n) is theta(f(n)) iff there exists a positive k1, k2, and n0 such that:
+        k,f(n) <= T(n) <= k2f(n)
+
+        T(n) >= 4n+3
+        T(n) <= 5n+3
+            k1 = 4  big omega
+            k2 = 8  big o
+            n_0 = 1
+                4n <= 4n+3 <= T(n) <= 5n+3 <= 8n
+                4n = f * f(n), therefore it is theta(n) [notice that both are n]
+
+
+    Some properties:
+        Sum of 2 functions:
+            O(f(n)) + O(g(n)) = O(max(f(n),g(n)))
+
+        product of 2 functions:
+            O(f(n)) * O(g(n)) = O(f(n) * g(n))
+        
+10/28
+    A Hashtable is a type of data structure for rast data access (eg O(1))
+
+    for kv-map, this means improved performance for:
+        - Contains
+        - Erase (will be o(1) to find it, but added stuff for actually erasing)
+        - Insert  (Similar to erase)
+        - fetch/update - opp[]
+
+    Basic idea:
+        - Keep an array of elements (called "buckets")
+        - Elements in the array are called buckets
+        - Instead of callimg it an array, it is called a hash table 
+        - Define a has function   
+            - h:key -> index
+                - h is the function
+                - it takes a key as a param
+                - returns an index
+            - key -> h -> index in hash table
+
+        Assumptions:
+            the underlying array for the hash table is available and works properly 
+                    (contains is pretty cool, you check where they key will be, and if it is the right key at the location, then it is in there! otherwise it isnt there)
+            relys on the hash function
+                when two keys lead to the same index, this is called a collision
+                    when this doesnt happen it is called a 'perfect' hash function
+                            each key has a different index
+                                lowkey impractable
+                                best we can hope for is that the hashfunction evenly distributes keys across the table (no skew/bias)
+                we have the hashtable contain (every slot) is a linked list
+            you want a hash function that evenly distributes the values across the table
+            There is a tradeoff between the amount of key value pairs and the slots in the table
+                you want to find a nice balance
+
+            keep track of the capacity
+                the key value pairs
+                    when the ratio/capacity gets over 75%, resize the array   
+                        this means that the average node count in a linkedlist in the array is 1
+                    
+                we still need the hashfunction to be FAST
+                    we want it to be o(1) with respect to the n
+
+    Approach 1: "Selecting Digits"
+        - Hash function selects specific digits in the number
+
+            -Example:
+                assume 9 digit student IDs
+                    define h(k) = 4th digit and 9th digit concatinated
+                        h(001348294) = 34
+                        insert table[34] = ID
+                    this is fast, but isnt evenly distributed, can only have indexs of 00 - 99
+                        also, high chance of collision
+
+11/2
+    Big-O gotcahs
+        1. Problem vs Algorithm
+        2. Tight bound?
+    
+    Basics of the exam:
+        Closed *
+            * note
+            * book
+            * computer
+            * phone
+            * watch
+            * calculator
+            * neighbor 
+
+        4 multiplart questions
+
+        5% of your final grade
+
+        topics:
+            * c++ programming
+                - dynamic vs static binding (virtual)
+                - "generics" (templates / type parameters)
+                - abstract classes (pure virtual functions, = 0)
+                - op overloading 
+                - essential opperators 
+            * alg. analysis
+                - best vs worst case
+                - detailed analysis 
+                - big o, omega, theta
+            * sorting
+                - insertion, selection, bubble
+                - merge & quick sort
+            * data types and structures
+                - sequence & map
+                    * arrayseq, linkedseq
+                    * arraymap, linkedmap, binarysortmap
+                
+    we need to have functions that handle collisions, because odds are we wont have a perfet hash function
+
+    what does a good hash function look like:
+        fast (not tied to n)
+        evenly distribute key values
+    
+    universal hash fucntion:
+    x != y
+    Pr(h(x) = h(y)) <= (1/n)
+
+    h(x) = ((kx+q)modp)modn
+    k,q are random numbers
+        (large nums)
+    p is a prime number
+        p >= n
+    
+
+    how to use c++'s hash functions:
+        #include <functional>
+            has alot of cuntions in it, including has function
+
+        int HashMap<K,V>::hash(const K& key){
+            std::hash<K> hash_fun;
+                // k is key for hw6, its just the type
+            int code = hash_fun(key);
+                // returns the hash code
+            int index = code % capacity;
+            return index;
+        }
+
+        in c++, one of the opperators is the function call opp
+            it has overloads
+            thats pretty cool
+
+    11/30
+        "Standard recurrence relation" form:
+            T(n) = theta(1) for small n
+            T(n) <= a*T(n/b) + O(n^d)
+        "Master Theorem"
+                    / O(n^d logN) if a = b^d
+            T(n) <= | O(n^d) if a < b^d
+                    \ O(n^(log_b(a)) if a > b^d
+
+        1. (a). T(n) <= 3T(n/2) + O(n)
+                a = 3, b = 2, d = 1
+                        T(n) <= O(n^log_2(3)) ~= O(n^1.58)
+                    e
+                   / \
+                  c   f
+                 / \ 
+                b   d
+            height = 3
+            what are the leaves: bdf
+            what does the tree look like after inserting j, then g, then h
+                    e
+                   / \
+                  c   f
+                 / \   \ 
+                b   d   j
+                       /
+                      g
+                       \
+                        h
+        full tree: everyt root-to-leaf path has the same length } every internal node has two children
+        complete tree: full at height-1 and the leave nodes filled from left to right
+        balanced: for each node in the tree, its left subtree & right subtree differ in height by at MOST 1
+
+        AVL tree
+            basic idea:
+                Calculate "Balance factor" for each node
+                    bf = height(left) - height(right)
+                    height = max(left,right) + 1
+                after every insert and erase we do "trace rotations" as needed
+                update the balance factors "up the tree"
+                    for us we just update the heights
